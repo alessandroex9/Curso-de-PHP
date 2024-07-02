@@ -10,7 +10,7 @@
     <main>
         <h1>Resultado Final</h1>
         <?php
-            $numero = $_GET["numero"];
+            $numero = $_GET["numero"] ?? 0;
             $antecessor = $numero - 1;
             $sucessor = $numero + 1;
             echo "O número escolhido foi $numero!<br>";          
