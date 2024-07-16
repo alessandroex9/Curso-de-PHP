@@ -8,33 +8,33 @@
 </head>
 <body>
     <?php 
-        $salario = $_GET ?? 0;
-        $minimo = 1380.00;
+        $salario = (float)$_GET['salario'] ?? 0;
+        $minimo = 1412;
+        $resto = null;
         $padrao = numfmt_create("pt_BR", NumberFormatter::CURRENCY);
     ?>
     <main>
         <h1>Informe seu salário</h1>
         <form action="<?php echo $_SERVER['PHP_SELF']?>" method="get">
             <label for="salario">Salário (R$)</label>
-            <input type="number" name="salario" id="salaorio" step="0.01">
+            <input type="number" name="salario" id="salaorio" step="0.01" value="<?=$salario?>" min="0">
             <input type="submit" value="Calcular">
-            <p>Considere o salário mínimo de <strong>R$1.380,00</strong></p>
+            <p>Considere o salário mínimo de <strong>R$<?=number_format($minimo,2,",", ".")?></strong></p>
         </form>
     </main>
     <section>
         <h2>Resultado Final</h2>
         <?php
-            if ($salario !=0) {
-                $resultado = intdiv($salario, $minimo);
-                echo "<p>Quem recebe um salário de " . numfmt_format_currency($padrao, $salario, "BRL") . "que equivale a $resultado.";
+            $totaldesal = intdiv($salario, $minimo);
+            $restodesal = $salario % $minimo;
+
+            if ($restodesal != 0) {
+                echo "<p>Quem recebe um salário de " . numfmt_format_currency($padrao, $salario, "BRL") . " que equivale a <strong>$totaldesal salário(s) mínimo(s)</strong> + " . numfmt_format_currency($padrao, $restodesal, "BRL");
             }else {
-                echo "<p>O Salário não pode ser zero!</p>";
+                echo "<p>Quem recebe um salário de " . numfmt_format_currency($padrao, $salario, "BRL") . " que equivale a <strong>$totaldesal salário(s) mínimo(s)</strong>";
             }
+            
         ?>
     </section>
 </body>
-</html>
-
-
-echo "<p>Quem recebe um salário de R$1.380,00 ganha <strong></strong>"; 
-        
+</html>     
