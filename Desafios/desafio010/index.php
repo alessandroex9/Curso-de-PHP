@@ -9,29 +9,29 @@
 <body>
     <?php
         $anoatual = date("Y");
-        $anoparacalcular = (int)$_POST;
-        $anodenascimento= (int)$_POST; 
+        $anoparacalcular = $_GET['anocalcular'] ?? $anoatual;
+        $anodenascimento= $_GET['anonascimento'] ?? '';
+        $idade = "";
     ?>
 
     <main>
         <h1>Calculando a sua idade</h1>
         
-        <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
+        <form action="<?php echo $_SERVER['PHP_SELF']?>" method="get">
             <label for="anonascimento">Em que ano você nasceu?</label>
-            <input type="number" name="anonascimento" id="anonascimento">
-            <label for="anoparacalcular">Quer saber sua idade em que ano? (atualmente estamos em $anoatual)</label>
-            <input type="number" name="anoparacalcular" id="anoparacalcular">
+            <input type="number" name="anonascimento" id="anonascimento" min="1900" max="<?=$anoatual?>" value="<?=$anodenascimento?>">
+            <label for="anocalcular">Quer saber sua idade em que ano? (atualmente estamos em <strong><?=$anoatual?></strong>)</label>
+            <input type="number" name="anocalcular" id="anocalcular" min="1900" value="<?=$anoparacalcular?>">
             <input type="submit" value="Qual será minha Idade?">
         </form>
     </main>
     <section>
+        
         <h2>Resultado</h2>
-        <?php
-            if ($anoparacalcular > $anoatual){
-                echo "<p>O ano não pode ser maior que o ano atual. ($anoatual)</p>";
-            }elseif ($anoparacalcular < $anoatual){
+        <?php 
+            if ($anodenascimento <= $anoparacalcular ) {
                 $idade = $anoparacalcular - $anodenascimento;
-                echo "<p>Quem nasceu em $anodenascimento vai ter <strong>$idade</strong> anos em $anoparacalcular!";
+                echo "<p>Quem nasceu em $anodenascimento vai ter <strong>$idade anos</strong> em $anoparacalcular!";
             }
         ?>
     </section> 

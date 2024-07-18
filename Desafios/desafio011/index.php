@@ -8,37 +8,35 @@
 </head>
 <body>
     <?php
-        $preco = (float)$_POST;
-        $porcentagem = (float)$_POST;
-        $dividir = null;
-        $multiplicar = null;
-        $resultado = null;
-        $padrao = numfmt_create("pt_BR", NumberFormatter::CURRENCY); 
+        $preco = $_REQUEST['$preco'] ?? 0;
+        $porcentagem = $_REQUEST['$porcentagem'] ?? 0;
     ?>
     <main>
         <h1>Reajustador de Preços</h1>
-        <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
+        <form action="<?=$_SERVER['PHP_SELF']?>" method="get">
             <label for="preco">Preço do Produto (R$)</label>
-            <input type="number" name="preco" id="preco">
-            <label for="porcetagem">Qual será o percentual de reajuste?</label>
-            <input type="range" name="porcentagem" id="porcentagem">
+            <input type="number" name="preco" id="preco" min="0.10" step="0.01" value="<?=$preco?>">
+            <label for="porcentagem">Qual será o percentual de reajuste? (<strong><span id="p">?</span>%</strong>) </label>
+            <input type="range" name="porcentagem" id="porcentagem" min="0" max="100" step="1" oninput="mudaValor()" value="<?=$porcentagem?>">
             <input type="submit" value="Reajustar">
         </form>
     </main>
+    <?php 
+        $aumento = ($preco * $porcentagem) / 100;
+        $resultado = $preco + $aumento;
+    ?>
     <section>
         <h2>Resultado do Reajuste</h2>
-        <?php
-        if ($preco and $porcentagem != 0) {
-            $dividir = $preco / 100;
-            $multiplicar = $dividir * $porcentagem;
-            $resultado = $preco + $multiplicar;
-            echo"<p>O preço que custava ". numfmt_format_currency($padrao, $preco, "BRL") . ", com <strong>$porcentagem% de aumento</strong> vai passar a custar <strong>" . numfmt_format_currency($padrao, $resultado, "BRL"). "</strong> a partir de agora.";
-        }else {
-            echo"<p>Não pode ser dividido por zero!";  
-        }
-        ?>
+        <p>O produto que custava R$ <?=number_format($preco, 2, ",", ".")?>, com <strong><?=$porcentagem?>% de aumento</strong> vai passar a custar <strong>R$<?=number_format($resultado, 2, ",", ".")?></strong> a partir de agora.</p>
+
     </section>
-    
+    <script>
+        mudaValor()
+        function mudaValor() {
+            document.getElementById('p').innerText = document.getElementById('porcen').value;
+            p.innerText = reaj.value;
+        }
+    </script>
     
 </body>
 </html>

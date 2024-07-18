@@ -8,7 +8,7 @@
 </head>
 <body>
     <?php 
-        $numero = (float)$_POST ?? 0;
+        $numero = $_POST['num'] ?? 0;
         $raizquadrada = null;
         $raizcubica = null;
         $raizquadrada = sqrt($numero);
@@ -17,17 +17,17 @@
     <main>
         <h1>Informe um número</h1>
         <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
-            <label for="numero">número</label>
-            <input type="number" name="numero" id="numero" step="0.001">
+            <label for="num">número</label>
+            <input type="number" name="num" id="num" step="0.001" value="<?=$numero?>">
             <input type="submit" value="Calcular Raízes">
         </form>
     </main>
     <section>
         <h2>Resultado final</h2>
         <?php 
-            echo "<p>Analizando o número $numero, temos<br></p>";
-            echo "<ul><li>A sua raiz quadrada é <strong>$raizquadrada</strong></li>";
-            echo "<li>A sua raiz cúbica é <strong>$raizcubica</strong></li></ul>";
+            echo "<p>Analizando o número <strong>$numero</strong>, temos<br></p>";
+            echo "<ul><li>A sua raiz quadrada é <strong>". number_format($raizquadrada, 2, ",", ".") . "</strong></li>";
+            echo "<li>A sua raiz cúbica é <strong>". number_format($raizcubica, 2, ",", ".")."</strong></li></ul>";
             
         ?>
     </section>
